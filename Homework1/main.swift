@@ -1,57 +1,92 @@
 import Foundation
+//Создать базовый класс – компьютер(родитель), придумать общие параметры. Производные(наследники) – ноутбук и смартфон, добавить по 1 параметру, отличающиеся. Создать класс РемонтСервис, который может содержать оба вида объектов в одной переменной(ноутбук и смартфон), предусмотреть функцию подсчета отдельно ремонтируемых ноутбуков и смартфонов (использовать оператор is). Функция должна распечатать информацию в следующем виде: "на сервисе 5 ноутбуков и 10 смартфонов". В main создать необходимые объекты и вызвать функцию.
+//
 
-func city ( country:String, age:Int){
-    if age >= 0 && age <= 18 && country == "USA"{
-        print("Американец юного возраста")
+
+
+class Computer{
+    var name: String
+    var programm: String
+    var cost: Int
+    init(name: String, programm: String, cost: Int) {
+        self.name = name
+        self.programm = programm
+        self.cost = cost
     }
-    if age >= 19 && age <= 30 && country == "USA"{
-        print("Американец среднего возраста")
+}
+
+
+class Laptop: Computer{
+    var size: Int
+    init(name: String, programm: String, cost: Int, size:Int) {
+        self.size = size
+        super.init(name: name, programm: programm, cost: cost)
     }
-    if age >= 31 && age >= 70 && country == "USA"{
-        print("Американец пожилого возраста")
-    }
-    if age >= 0 && age <= 18 && country == "Portugal"{
-        print("Португалец юного возраста")
-    }
-    if age >= 19 && age <= 30 && country == "Portugal"{
-        print("Португалец среднего возраста")
-    }
-    if age >= 31 && age >= 70 && country == "Portugal"{
-        print("Португалец пожилого возраста")
-    }
-    if age >= 0 && age <= 18 && country == "Kyrgyzstan"{
-        print("Кыргыз юного возраста")
-    }
-    if age >= 19 && age <= 30 && country == "Kyrgyzsta"{
-        print("Кыргыз среднего возраста")
-    }
-    if age >= 31 && age >= 70 && country == "Kyrgyzstan"{
-        print("Кыгыз пожилого возраста")
-    }
-    
+}
+
+class Phone: Computer{
+    var camera: String
+     init(name: String, programm: String, cost: Int, camera: String) {
+         self.camera = camera
+         super.init(name: name, programm: programm, cost: cost)
     }
     
-city(country:"Kyrgyzstan", age: 16)
-var string = ""
-func year(month:Int) {
-    switch month{
-    case 1:print("Месяц 1 - январь,Это зима. 1 января праздник.")
-    case 2:print("Месяц 2 - февраль,Это зима. 23 февраля праздник.")
-    case 3:print("Месяц 3 - Март.Это весна  8 марта праздник.")
-    case 4:print("Месяц 4 - апрель,Весна. 1 апреля праздник.")
-    case 5:print("Месяц 5 - май.Весна. 9 мая праздник.")
-    case 6:print("Месяц 6 - июнь,Это лето. 25 июня день рождение.")
-    case 7:print("Месяц 7 - июль,Это лето. праздников нет.")
-    case 8:print("Месяц 8 - август,Это лето. 31 августа праздник.")
-    case 9:print("Месяц 9 - сентябрь,Это осень.1 сентября ад.")
-    case 10:print("Месяц 10 - октябрь,Это осень. 31 октября праздник.")
-    case 11:print("Месяц 11- ноябрь,Это осень. нет праздников.")
-    case 12:print("Месяц 12 - декабрь,Это зима. 31 декабря праздник..")
-    default:
-        break
-      
+}
+
+class FixService{
+    var objectsToService: [Computer]
+    init(objectsToService: [Computer]) {
+        self.objectsToService = objectsToService
+    }
+    
+    func countObjects() {
+        let laptops = countLaptops()
+        let phones = countPhones()
+        print("У нас \(phones) телефонов, \(laptops) ноутбуков")
+    }
+    
+    private func countLaptops() -> Int{
+        var laptops = 0
+        
+        for object in objectsToService{
+            if object is Laptop{
+                laptops += 1
+            }
+        }
+        return laptops
+        
+    }
+    
+    private func countPhones() -> Int{
+        var phones = 0
+        
+        for object in objectsToService {
+            if object is Phone {
+                phones += 1
+            }
+        }
+        
+        return phones
     }
 
 }
-year(month: 9)
+
+
+let service = FixService(objectsToService: [
+    Phone(name: "Iphone 13", programm: "", cost: 800, camera: "4080"),
+    Laptop(name: "MacBook Air M2", programm: "Swift", cost: 1300, size: 180),
+    Laptop(name: "Lenovo", programm: "Pycharm", cost: 1000, size: 200)
+]
+)
+
+for object in service.objectsToService{
+    if object is Phone{
+        print("name: \(object.name), cost: \(object.cost)")
+    }else if object is Laptop{
+        print("name: \(object.name), cost: \(object.cost), programm: \(object.programm)")
+    }
+}
+
+
+
 
